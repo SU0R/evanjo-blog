@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+.vercel/
+playwright-report/
+test-results/
+*.log
+.DS_Store
+Thumbs.db
+/Entries/
+/ImageMedia/
+InstructionsWhat type of Blog I want.gdoc
+Scanned Instructions for Profile Page.pdf
+*.tsbuildinfo
