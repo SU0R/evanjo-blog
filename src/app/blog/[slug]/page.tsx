@@ -55,7 +55,6 @@ export default async function PostPage({ params }: PostPageProps) {
       </Link>
 
       <header className="article-header">
-        <p className="eyebrow">Reflection</p>
         <h1>{post.title}</h1>
         <div className="article-header__meta">
           <span>By {post.author}</span>
@@ -64,7 +63,7 @@ export default async function PostPage({ params }: PostPageProps) {
         </div>
       </header>
 
-      <AudioPlayer src={post.audio.src} title={post.title} duration={post.audio.duration} />
+      <AudioPlayer src={post.audio.src} title={post.title} />
 
       <div className="article-rule" aria-hidden="true">
         <span />

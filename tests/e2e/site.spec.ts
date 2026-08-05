@@ -23,6 +23,16 @@ test("about page renders every supplied profile asset and public contact link", 
   await expect(page.getByText("Waters Corporation")).toBeVisible();
   await expect(page.getByText("Algonquin Regional High School")).toBeVisible();
   await expect(page.getByText("Romans 8:1")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Journey" })).toBeVisible();
+  await expect(page.getByText("Student · Writer · Builder", { exact: true })).toHaveCount(0);
+  await expect(page.getByText(/I do a lot of writing in my free time/)).toHaveCount(0);
+  await expect(page.getByText("Ideas worth working through.", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Writing, learning, and building with purpose.")).toHaveCount(0);
+  await expect(page.getByText("© 2026 Evan Jo", { exact: true })).toHaveCount(0);
+  await expect(page.locator(".hero__portrait-accent")).toHaveCount(0);
+  await expect(
+    page.getByRole("link", { name: "Algonquin Regional High School", exact: true }),
+  ).toHaveAttribute("href", "https://www.arhs.nsboro.k12.ma.us/");
 
   const images = page.locator("img");
   await expect(images).toHaveCount(3);
@@ -41,7 +51,7 @@ test("about page renders every supplied profile asset and public contact link", 
     "href",
     "https://github.com/SU0R",
   );
-  await expect(page.getByRole("link", { name: "evanjo2100@gmail.com" })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "Email Evan Jo" })).toHaveAttribute(
     "href",
     "mailto:evanjo2100@gmail.com",
   );
@@ -55,13 +65,19 @@ test("primary navigation leads from About Me to the blog and article", async ({ 
   await page.getByRole("link", { name: "Blog", exact: true }).click();
   await expect(page).toHaveURL(/\/blog$/);
   await expect(page.getByRole("heading", { level: 1, name: "Blog" })).toBeVisible();
+  await expect(page.getByText("Notes & reflections", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("9:35 audio", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("Read and listen", { exact: true })).toHaveCount(0);
 
-  await page.getByRole("link", { name: "Read and listen" }).click();
+  await page.getByRole("link", { name: /Reflection on my coding journey with AI/ }).click();
   await expect(page).toHaveURL(new RegExp(`${postPath}$`));
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "Reflection on my coding journey with AI",
   );
   await expect(page.locator("audio")).toBeVisible();
+  await expect(page.getByText("Reflection", { exact: true })).toHaveCount(0);
+  await expect(page.getByText(/Read by Evan Jo/)).toHaveCount(0);
+  await expect(page.getByText("Download MP3", { exact: true })).toHaveCount(0);
   await expect(page.getByRole("heading", { level: 2, name: "How did we get here?" })).toBeVisible();
   expect(errors).toEqual([]);
 });

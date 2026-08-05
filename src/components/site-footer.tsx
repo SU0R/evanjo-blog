@@ -10,7 +10,6 @@ export function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="site-footer__inner">
-        <p>Writing, learning, and building with purpose.</p>
         <div className="site-footer__links" aria-label="Contact links">
           {links.map((link) => (
             <a
@@ -22,7 +21,6 @@ export function SiteFooter() {
             </a>
           ))}
         </div>
-        <p className="site-footer__copyright">© 2026 Evan Jo</p>
       </div>
     </footer>
   );

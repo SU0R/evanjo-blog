@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Evan Jo",
-  title: "Evan Jo — Student, writer, and builder",
+  title: "Evan Jo — Personal blog",
   description:
     "Evan Jo's personal website and writing on technology, learning, faith, and the ideas that connect them.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://evanjo-blog.vercel.app",
