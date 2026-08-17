@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import DeepWorkDigitalHabits from "./posts/deep-work-digital-habits.mdx";
 import ReflectionOnAiCoding from "./posts/reflection-on-my-coding-journey-with-ai.mdx";
 
 export type Post = {
@@ -19,6 +20,19 @@ export type Post = {
 };
 
 export const posts: Post[] = [
+  {
+    slug: "deep-work-digital-habits",
+    title: "Deep Work: A Look into My Own Habits on the Internet",
+    publishedAt: "2026-08-17",
+    author: "Evan Jo",
+    description:
+      "Reflections on Deep Work, motivation, technology, and building strongly rooted digital habits.",
+    audio: {
+      src: "/media/entries/digitalhabits-august-17.mp3",
+      duration: "7:12",
+    },
+    Content: DeepWorkDigitalHabits,
+  },
   {
     slug: "reflection-on-my-coding-journey-with-ai",
     title:
