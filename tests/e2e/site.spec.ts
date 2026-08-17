@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 
 const postPath = "/blog/reflection-on-my-coding-journey-with-ai";
+const deepWorkPostPath = "/blog/deep-work-digital-habits";
 
 function collectBrowserErrors(page: Page) {
   const errors: string[] = [];
@@ -93,6 +94,32 @@ test("audio asset supports HTTP byte-range delivery", async ({ request }) => {
   expect((await response.body()).byteLength).toBe(1024);
 });
 
+test("Deep Work entry and audio are published together", async ({ page, request }) => {
+  const errors = collectBrowserErrors(page);
+
+  await page.goto(deepWorkPostPath);
+  await expect(
+    page.getByRole("heading", {
+      level: 1,
+      name: "Deep Work: A Look into My Own Habits on the Internet",
+    }),
+  ).toBeVisible();
+  await expect(page.getByText("August 17, 2026", { exact: true })).toBeVisible();
+  await expect(page.getByText(/But the question remains/)).toBeVisible();
+  await expect(page.locator("audio source")).toHaveAttribute(
+    "src",
+    "/media/entries/digitalhabits-august-17.mp3",
+  );
+
+  const response = await request.get("/media/entries/digitalhabits-august-17.mp3", {
+    headers: { Range: "bytes=0-1023" },
+  });
+  expect(response.status()).toBe(206);
+  expect(response.headers()["content-type"]).toContain("audio/mpeg");
+  expect((await response.body()).byteLength).toBe(1024);
+  expect(errors).toEqual([]);
+});
+
 test("unknown routes render the custom not-found page", async ({ page }) => {
   await page.goto("/not-a-real-page");
   await expect(
@@ -104,7 +131,7 @@ test("unknown routes render the custom not-found page", async ({ page }) => {
 test("pages do not overflow the mobile viewport", async ({ page, isMobile }) => {
   test.skip(!isMobile, "Mobile-only layout assertion");
 
-  for (const path of ["/", "/blog", postPath]) {
+  for (const path of ["/", "/blog", postPath, deepWorkPostPath]) {
     await page.goto(path);
     const sizes = await page.evaluate(() => ({
       viewport: window.innerWidth,

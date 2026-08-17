@@ -4,6 +4,7 @@ out/
 .vercel/
 playwright-report/
 test-results/
+tmp/
 *.log
 .DS_Store
 Thumbs.db
