@@ -2,6 +2,7 @@ import { expect, test, type Page } from "@playwright/test";
 
 const postPath = "/blog/reflection-on-my-coding-journey-with-ai";
 const deepWorkPostPath = "/blog/deep-work-digital-habits";
+const layingFoundationsPostPath = "/blog/laying-the-foundations";
 
 function collectBrowserErrors(page: Page) {
   const errors: string[] = [];
@@ -120,6 +121,32 @@ test("Deep Work entry and audio are published together", async ({ page, request 
   expect(errors).toEqual([]);
 });
 
+test("Laying the Foundations entry and audio are published together", async ({ page, request }) => {
+  const errors = collectBrowserErrors(page);
+
+  await page.goto(layingFoundationsPostPath);
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Laying the Foundations" }),
+  ).toBeVisible();
+  await expect(page.getByText("October 15, 2026", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText(/Those are my current ideas on the new course of the book/),
+  ).toBeVisible();
+  await expect(page.locator("audio source")).toHaveAttribute(
+    "src",
+    "/media/entries/laying-the-foundations-october-15.wav",
+  );
+  await expect(page.locator("audio source")).toHaveAttribute("type", "audio/wav");
+
+  const response = await request.get("/media/entries/laying-the-foundations-october-15.wav", {
+    headers: { Range: "bytes=0-1023" },
+  });
+  expect(response.status()).toBe(206);
+  expect(response.headers()["content-type"]).toContain("audio/wav");
+  expect((await response.body()).byteLength).toBe(1024);
+  expect(errors).toEqual([]);
+});
+
 test("unknown routes render the custom not-found page", async ({ page }) => {
   await page.goto("/not-a-real-page");
   await expect(
@@ -131,7 +158,7 @@ test("unknown routes render the custom not-found page", async ({ page }) => {
 test("pages do not overflow the mobile viewport", async ({ page, isMobile }) => {
   test.skip(!isMobile, "Mobile-only layout assertion");
 
-  for (const path of ["/", "/blog", postPath, deepWorkPostPath]) {
+  for (const path of ["/", "/blog", postPath, deepWorkPostPath, layingFoundationsPostPath]) {
     await page.goto(path);
     const sizes = await page.evaluate(() => ({
       viewport: window.innerWidth,
