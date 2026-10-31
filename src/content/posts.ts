@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import DeepWorkDigitalHabits from "./posts/deep-work-digital-habits.mdx";
+import DontWasteYourLife from "./posts/dont-waste-your-life.mdx";
 import LayingTheFoundations from "./posts/laying-the-foundations.mdx";
 import ReflectionOnAiCoding from "./posts/reflection-on-my-coding-journey-with-ai.mdx";
 
@@ -21,6 +22,19 @@ export type Post = {
 };
 
 export const posts: Post[] = [
+  {
+    slug: "dont-waste-your-life",
+    title: "Don't Waste Your Life by John Piper, Call to Faith.",
+    publishedAt: "2026-10-31",
+    author: "Evan Jo",
+    description:
+      "Reflections on John Piper's Don't Waste Your Life through four objects: a stopwatch, a flower, dice, and a pencil.",
+    audio: {
+      src: "/media/entries/dont-waste-your-life-october-31.wav",
+      duration: "7:27",
+    },
+    Content: DontWasteYourLife,
+  },
   {
     slug: "laying-the-foundations",
     title: "Laying the Foundations",
