@@ -3,6 +3,7 @@ import { expect, test, type Page } from "@playwright/test";
 const postPath = "/blog/reflection-on-my-coding-journey-with-ai";
 const deepWorkPostPath = "/blog/deep-work-digital-habits";
 const layingFoundationsPostPath = "/blog/laying-the-foundations";
+const dontWasteYourLifePostPath = "/blog/dont-waste-your-life";
 
 function collectBrowserErrors(page: Page) {
   const errors: string[] = [];
@@ -147,6 +148,34 @@ test("Laying the Foundations entry and audio are published together", async ({ p
   expect(errors).toEqual([]);
 });
 
+test("Don't Waste Your Life entry and audio are published together", async ({ page, request }) => {
+  const errors = collectBrowserErrors(page);
+
+  await page.goto(dontWasteYourLifePostPath);
+  await expect(
+    page.getByRole("heading", {
+      level: 1,
+      name: "Don't Waste Your Life by John Piper, Call to Faith.",
+    }),
+  ).toBeVisible();
+  await expect(page.getByText("October 31, 2026", { exact: true })).toBeVisible();
+  await expect(page.getByText(/The first object that I chose was a stopwatch/)).toBeVisible();
+  await expect(page.getByText("In Christ,", { exact: true })).toBeVisible();
+  await expect(page.locator("audio source")).toHaveAttribute(
+    "src",
+    "/media/entries/dont-waste-your-life-october-31.wav",
+  );
+  await expect(page.locator("audio source")).toHaveAttribute("type", "audio/wav");
+
+  const response = await request.get("/media/entries/dont-waste-your-life-october-31.wav", {
+    headers: { Range: "bytes=0-1023" },
+  });
+  expect(response.status()).toBe(206);
+  expect(response.headers()["content-type"]).toContain("audio/wav");
+  expect((await response.body()).byteLength).toBe(1024);
+  expect(errors).toEqual([]);
+});
+
 test("unknown routes render the custom not-found page", async ({ page }) => {
   await page.goto("/not-a-real-page");
   await expect(
@@ -158,7 +187,14 @@ test("unknown routes render the custom not-found page", async ({ page }) => {
 test("pages do not overflow the mobile viewport", async ({ page, isMobile }) => {
   test.skip(!isMobile, "Mobile-only layout assertion");
 
-  for (const path of ["/", "/blog", postPath, deepWorkPostPath, layingFoundationsPostPath]) {
+  for (const path of [
+    "/",
+    "/blog",
+    postPath,
+    deepWorkPostPath,
+    layingFoundationsPostPath,
+    dontWasteYourLifePostPath,
+  ]) {
     await page.goto(path);
     const sizes = await page.evaluate(() => ({
       viewport: window.innerWidth,
