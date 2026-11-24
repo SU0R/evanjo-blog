@@ -2,6 +2,7 @@ import type { ComponentType } from "react";
 import DeepWorkDigitalHabits from "./posts/deep-work-digital-habits.mdx";
 import DontWasteYourLife from "./posts/dont-waste-your-life.mdx";
 import LayingTheFoundations from "./posts/laying-the-foundations.mdx";
+import PartTwoWhereIAmUpdate from "./posts/part-two-where-i-am-update.mdx";
 import ReflectionOnAiCoding from "./posts/reflection-on-my-coding-journey-with-ai.mdx";
 
 export type Post = {
@@ -22,6 +23,19 @@ export type Post = {
 };
 
 export const posts: Post[] = [
+  {
+    slug: "part-two-where-i-am-update",
+    title: "Part Two: Where I Am Update",
+    publishedAt: "2026-11-23",
+    author: "Evan Jo",
+    description:
+      "An update on the writing process, the structure of Part II of Rooted Digital Habits, and what comes next.",
+    audio: {
+      src: "/media/entries/part-two-where-i-am-update.wav",
+      duration: "9:43",
+    },
+    Content: PartTwoWhereIAmUpdate,
+  },
   {
     slug: "dont-waste-your-life",
     title: "Don't Waste Your Life by John Piper, Call to Faith.",
